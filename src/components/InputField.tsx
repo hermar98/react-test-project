@@ -1,16 +1,13 @@
-import { useState } from "react";
+type InputFieldProps = {
+  value: string;
+  onChange: (value: string) => void;
+};
 
-const InputField = () => {
-  const [value, setValue] = useState("Hello world");
-
+const InputField = ({ value, onChange }: InputFieldProps) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-    setValue(event.currentTarget.value);
+    onChange(event.currentTarget.value);
 
-  return (
-    <>
-      <input value={value} onChange={handleChange} type="text" />
-    </>
-  );
+  return <input value={value} onChange={handleChange} type="text" />;
 };
 
 export default InputField;
