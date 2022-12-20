@@ -1,6 +1,12 @@
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { addTodoItem, deleteTodoItem, getTodoItems } from "../api";
+import {
+  addTodoItem,
+  deleteTodoItem,
+  getTodoItems,
+  updateTodoItem,
+} from "../api";
+import { TodoItem } from "../api/types";
 import AddTodoButton from "../components/AddTodoButton";
 import TodoInputField from "../components/TodoInputField";
 import TodoList from "../components/TodoList";
@@ -8,7 +14,7 @@ import TodoList from "../components/TodoList";
 const TodoListPage = () => {
   // State
   const [input, setInput] = useState("");
-  const [items, setItems] = useState<string[]>([]);
+  const [items, setItems] = useState<TodoItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -38,14 +44,28 @@ const TodoListPage = () => {
   const handleInputChange = (input: string) => setInput(input);
 
   const handleAddItem = () => {
-    addTodoItem(input)
-      .then((items) => setItems(items))
+    const newItem: Omit<TodoItem, "id"> = {
+      name: input,
+      checked: false,
+    };
+    addTodoItem(newItem)
+      .then((item) => setItems([...items, item]))
       .catch((error: Error) => setError(error.message));
   };
 
-  const handleDeleteItem = (item: string) => {
-    deleteTodoItem(item)
-      .then((items) => setItems(items))
+  const handleUpdateItem = (item: TodoItem) => {
+    updateTodoItem(item)
+      .then((updatedItem) => {
+        setItems(
+          items.map((item) => (item.id === updatedItem.id ? updatedItem : item))
+        );
+      })
+      .catch((error: Error) => setError(error.message));
+  };
+
+  const handleDeleteItem = (item: TodoItem) => {
+    deleteTodoItem(item.id)
+      .then((itemId) => setItems(items.filter((item) => item.id !== itemId)))
       .catch((error: Error) => setError(error.message));
   };
 
@@ -55,7 +75,11 @@ const TodoListPage = () => {
       {loading ? (
         <Typography>Loading...</Typography>
       ) : (
-        <TodoList items={items} onDelete={handleDeleteItem} />
+        <TodoList
+          items={items}
+          onCheck={handleUpdateItem}
+          onDelete={handleDeleteItem}
+        />
       )}
       {error && <p>{error}</p>}
       <Box display="flex" mt={5}>

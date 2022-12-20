@@ -3,13 +3,16 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { TodoItem } from "../api/types";
+import { Checkbox } from "@mui/material";
 
 type TodoListProps = {
-  items: string[];
-  onDelete: (item: string) => void;
+  items: TodoItem[];
+  onCheck: (item: TodoItem) => void;
+  onDelete: (item: TodoItem) => void;
 };
 
-const TodoList = ({ items, onDelete }: TodoListProps) => {
+const TodoList = ({ items, onCheck, onDelete }: TodoListProps) => {
   return (
     <List>
       {items.map((item, i) => (
@@ -21,7 +24,8 @@ const TodoList = ({ items, onDelete }: TodoListProps) => {
             </IconButton>
           }
         >
-          <ListItemText primary={item} />
+          <Checkbox checked={item.checked} onChange={() => onCheck(item)} />
+          <ListItemText primary={item.name} />
         </ListItem>
       ))}
     </List>

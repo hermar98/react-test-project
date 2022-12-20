@@ -16,6 +16,7 @@ const TodoInputField = ({ value, onChange }: TodoInputFieldProps) => {
       variant="outlined"
       onChange={handleChange}
       type="text"
+      sx={{ mr: 2 }}
     />
   );
 };
