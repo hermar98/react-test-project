@@ -4,7 +4,8 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { TodoItem } from "../api/types";
-import { Checkbox } from "@mui/material";
+import { Checkbox, ListItemButton } from "@mui/material";
+import { useHistory } from "react-router-dom";
 
 type TodoListProps = {
   items: TodoItem[];
@@ -13,6 +14,7 @@ type TodoListProps = {
 };
 
 const TodoList = ({ items, onCheck, onDelete }: TodoListProps) => {
+  const history = useHistory();
   return (
     <List>
       {items.map((item, i) => (
@@ -24,8 +26,13 @@ const TodoList = ({ items, onCheck, onDelete }: TodoListProps) => {
             </IconButton>
           }
         >
-          <Checkbox checked={item.checked} onChange={() => onCheck(item)} />
-          <ListItemText primary={item.name} />
+          <Checkbox
+            checked={item.checked}
+            onChange={() => onCheck({ ...item, checked: !item.checked })}
+          />
+          <ListItemButton onClick={() => history.push(`/${item.id}`)}>
+            <ListItemText primary={item.name} />
+          </ListItemButton>
         </ListItem>
       ))}
     </List>
