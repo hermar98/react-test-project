@@ -6,6 +6,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { TodoItem } from "../api/types";
 import { Checkbox, ListItemButton } from "@mui/material";
 import { useHistory } from "react-router-dom";
+import { UserContext } from "../UserContext";
+import { useContext } from "react";
 
 type TodoListProps = {
   items: TodoItem[];
@@ -15,13 +17,15 @@ type TodoListProps = {
 
 const TodoList = ({ items, onCheck, onDelete }: TodoListProps) => {
   const history = useHistory();
+  const user = useContext(UserContext);
+
   return (
     <List>
       {items.map((item, i) => (
         <ListItem
           key={i}
           secondaryAction={
-            <IconButton onClick={() => onDelete(item)}>
+            <IconButton onClick={() => onDelete(item)} disabled={!user.isAdmin}>
               <DeleteIcon />
             </IconButton>
           }

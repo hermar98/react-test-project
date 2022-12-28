@@ -60,7 +60,7 @@ export const updateTodoItem = async (item: TodoItem, shouldFail = false) => {
   return await new Promise<TodoItem>((resolve, reject) =>
     setTimeout(() => {
       if (shouldFail) return reject(new Error("Updating todo item failed."));
-      todoItems = [...todoItems, item];
+      todoItems = todoItems.map((i) => (i.id === item.id ? item : i));
       resolve(item);
     }, 1000)
   );
