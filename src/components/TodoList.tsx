@@ -20,17 +20,23 @@ const TodoList = ({ items, onCheck, onDelete }: TodoListProps) => {
   const user = useContext(UserContext);
 
   return (
-    <List>
+    <List data-cy="todo-list">
       {items.map((item, i) => (
         <ListItem
+          data-cy={`todo-item-${i}`}
           key={i}
           secondaryAction={
-            <IconButton onClick={() => onDelete(item)} disabled={!user.isAdmin}>
+            <IconButton
+              data-cy={`todo-item-${i}-delete-button`}
+              onClick={() => onDelete(item)}
+              disabled={!user.isAdmin}
+            >
               <DeleteIcon />
             </IconButton>
           }
         >
           <Checkbox
+            data-cy={`todo-item-${i}-checkbox`}
             checked={item.checked}
             onChange={() => onCheck({ ...item, checked: !item.checked })}
           />

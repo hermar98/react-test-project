@@ -11,6 +11,7 @@ const TodoInputField = ({ value, onChange }: TodoInputFieldProps) => {
 
   return (
     <TextField
+      data-cy="add-item-input"
       value={value}
       label="New todo item"
       variant="outlined"

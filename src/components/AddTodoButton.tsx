@@ -7,7 +7,11 @@ type AddTodoButtonProps = {
 
 const AddTodoButton = ({ onClick, children }: AddTodoButtonProps) => {
   return (
-    <Button variant="contained" onClick={() => onClick()}>
+    <Button
+      data-cy="add-item-button"
+      variant="contained"
+      onClick={() => onClick()}
+    >
       {children}
     </Button>
   );

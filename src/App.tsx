@@ -9,7 +9,7 @@ import { UserContext } from "./UserContext";
 function App() {
   const user: User = {
     username: "adam123",
-    isAdmin: false,
+    isAdmin: true,
   };
 
   return (
